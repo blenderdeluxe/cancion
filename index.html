@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<link rel="icon" href="data:,">
+<title>Canción para sentir — sin sonido</title>
+<style>
+  :root {
+    --bg: #0b1020;
+    --surface: #151b2e;
+    --surface-2: #1d2540;
+    --ink: #eef2ff;
+    --muted: #94a0bf;
+    --accent: #7dd3fc;
+    --accent-2: #f0abfc;
+    --border: #2a3350;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(120% 80% at 50% 0%, #17203a 0%, var(--bg) 55%);
+    color: var(--ink);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 22px 18px 34px;
+    gap: 18px;
+  }
+  header { text-align: center; max-width: 30rem; }
+  h1 { font-size: 1.35rem; margin: 0 0 8px; letter-spacing: -.01em; }
+  .tagline { color: var(--muted); font-size: .92rem; line-height: 1.45; margin: 0; }
+  .muted { color: var(--muted); }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 18px 16px;
+    width: 100%;
+    max-width: 30rem;
+  }
+  .now {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    /* en un móvil de 360-412px la frase completa debe caber: escalar y permitir corte de línea */
+    font-size: clamp(1rem, 4.7vw, 1.5rem);
+    line-height: 1.35;
+    letter-spacing: .01em;
+    min-height: 2.1rem;
+    overflow-wrap: anywhere;
+    color: var(--muted);
+    transition: color .12s ease;
+  }
+  .now.hit { color: var(--ink); }
+  .wave { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 1.9rem; line-height: 1.1; letter-spacing: .16em; color: #46527a; }
+  .wave span { transition: color .1s ease, transform .1s ease; display: inline-block; }
+  .wave span.now-note { color: var(--accent); transform: translateY(-3px) scale(1.12); }
+  .sylls { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .sylls span {
+    font-size: .88rem; padding: 3px 7px; border-radius: 8px;
+    background: var(--surface-2); color: var(--muted); transition: all .1s ease;
+  }
+  .sylls span.now-syll { background: var(--accent); color: #06283a; font-weight: 700; }
+  .pulse {
+    margin-top: 14px; height: 6px; border-radius: 99px; background: var(--surface-2);
+    overflow: hidden;
+  }
+  .pulse i { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+  button {
+    font: inherit; font-weight: 650; border-radius: 14px; border: 0;
+    padding: 15px 20px; min-height: 52px; cursor: pointer; color: #06283a;
+    background: linear-gradient(180deg, #a5e8ff, var(--accent));
+    width: 100%; max-width: 30rem;
+  }
+  button.ghost { background: transparent; color: var(--ink); border: 1px solid var(--border); }
+  button:disabled { opacity: .45; cursor: default; }
+  .row { display: flex; gap: 10px; width: 100%; max-width: 30rem; }
+  .row button { flex: 1; padding: 12px 10px; min-height: 46px; font-size: .88rem; }
+  .row button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+  .score { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .92rem; line-height: 1.85; white-space: pre; overflow-x: auto; }
+  .score .fr { color: #64719b; display: block; }
+  .score .fr.on { color: var(--ink); }
+  .warn {
+    background: #2a1e12; border: 1px solid #6b4a1f; color: #ffd9a3;
+    font-size: .86rem; line-height: 1.45; border-radius: 12px; padding: 11px 13px;
+    max-width: 30rem;
+  }
+  footer { color: var(--muted); font-size: .78rem; text-align: center; max-width: 26rem; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Canción para sentir</h1>
+  <p class="tagline">Sin audífonos y sin sonido: el teléfono <strong>vibra la melodía</strong> en la mano y la letra se ilumina al ritmo. Esta página no reproduce ningún audio.</p>
+</header>
+
+<div id="warn" class="warn" hidden></div>
+
+<section class="card">
+  <div class="now" id="now">Pulsa el botón para empezar</div>
+  <div class="wave" id="wave"></div>
+  <div class="sylls" id="sylls"></div>
+  <div class="pulse"><i id="bar"></i></div>
+</section>
+
+<button id="play">▶ Sentir la melodía</button>
+
+<div class="row">
+  <button class="ghost" id="speed" aria-pressed="false">Velocidad: normal</button>
+  <button class="ghost" id="stop" disabled>■ Detener</button>
+</div>
+
+<section class="card">
+  <div class="muted" style="font-size:.82rem;margin-bottom:8px">Estrellita — tradicional (melodía de dominio público)</div>
+  <div class="score" id="score"></div>
+</section>
+
+<footer>
+  ▁ = nota grave · █ = nota aguda · cada punto es un golpe: marca el ritmo con el pulso.<br>
+  La vibración funciona en Chrome de Android. En iPhone el navegador no permite vibrar, pero la melodía igual se lee y se anima.
+</footer>
+
+<script>
+// Estrellita (Twinkle Twinkle): 6 frases x 7 notas. Nada de audio: vibración + texto.
+// La ALTURA de la nota define el dibujo (▁▂▃▄▅▆) y también el patrón de vibración
+// (grave = un pulso largo y suave, agudo = pulsos cortos y rápidos): así se siente subir y bajar.
+const NOTA = {
+  C: { lvl: 1, dib: '▁', hz: 262 },
+  D: { lvl: 2, dib: '▂', hz: 294 },
+  E: { lvl: 3, dib: '▃', hz: 330 },
+  F: { lvl: 4, dib: '▄', hz: 349 },
+  G: { lvl: 5, dib: '▅', hz: 392 },
+  A: { lvl: 6, dib: '▆', hz: 440 }
+};
+const NEGRA = 470, RAPIDA = 340, LARGA = 950, GAP = 70;
+
+// [sílaba, nota] por frase — 7 golpes por frase
+const FRASES = [
+  [['Es','C'],['tre','C'],['lli','G'],['ta','G'],['dón','A'],['de','A'],['es·tás','G']],
+  [['Me','F'],['pre','F'],['gun','E'],['to','E'],['qué','D'],['se','D'],['rás','C']],
+  [['En','G'],['el','G'],['cie','F'],['lo','F'],['y','E'],['en','E'],['mar','D']],
+  [['Un','G'],['dia','G'],['man','F'],['te','F'],['de','E'],['ver','E'],['dad','D']],
+  [['Es','C'],['tre','C'],['lli','G'],['ta','G'],['dón','A'],['de','A'],['es·tás','G']],
+  [['Me','F'],['pre','F'],['gun','E'],['to','E'],['qué','D'],['se','D'],['rás','C']]
+];
+// la última nota de cada frase (y las dos 'la la' del final de la 1ª mitad) se sostienen
+function dur(i, j) {
+  if (j === 6) return LARGA;
+  if (j >= 4 && j <= 5 && (i === 0 || i === 4)) return RAPIDA;
+  return NEGRA;
+}
+function patronVibracion(lvl, ms) {
+  const t = Math.round(ms * 0.7);
+  if (lvl <= 2) return [t];                      // grave: un pulso largo
+  if (lvl <= 3) return [Math.round(t * .6), GAP, Math.round(t * .4)];
+  if (lvl <= 4) return [Math.round(t * .45), GAP, Math.round(t * .45)];
+  if (lvl === 5) return [Math.round(t * .3), GAP, Math.round(t * .3), GAP, Math.round(t * .3)];
+  return [Math.round(t * .25), GAP, Math.round(t * .25), GAP, Math.round(t * .25), GAP, Math.round(t * .25)];
+}
+
+const elNow = document.getElementById('now');
+const elWave = document.getElementById('wave');
+const elSylls = document.getElementById('sylls');
+const elScore = document.getElementById('score');
+const elBar = document.getElementById('bar');
+const elPlay = document.getElementById('play');
+const elStop = document.getElementById('stop');
+const elSpeed = document.getElementById('speed');
+const elWarn = document.getElementById('warn');
+
+const puedeVibrar = typeof navigator.vibrate === 'function';
+if (!puedeVibrar) {
+  elWarn.hidden = false;
+  elWarn.innerHTML = '<strong>Este navegador no puede vibrar.</strong> En iPhone ningún navegador permite hacer vibrar el teléfono desde una web. En Android, abre esta misma dirección con <strong>Chrome</strong> y toca el botón: el pulso de la melodía se siente en la mano.';
+}
+let factor = 1;
+const factores = [1, 0.65, 1.5], nombres = ['normal', 'lento', 'rápido'];
+let fi = 0;
+
+// Partitura completa
+FRASES.forEach((frase, i) => {
+  const linea = frase.map(([s]) => s).join('·');
+  const onda = frase.map(([, n]) => NOTA[n].dib).join('');
+  const b = document.createElement('span');
+  b.className = 'fr';
+  b.dataset.fr = i;
+  b.textContent = linea + '\n' + onda + '\n\n';
+  elScore.appendChild(b);
+});
+
+let timers = [], activo = false;
+
+function limpiar() {
+  timers.forEach(clearTimeout);
+  timers = [];
+  if (puedeVibrar) navigator.vibrate(0);
+  document.querySelectorAll('.fr').forEach(f => f.classList.remove('on'));
+  document.querySelectorAll('.now-note').forEach(f => f.classList.remove('now-note'));
+  document.querySelectorAll('.now-syll').forEach(f => f.classList.remove('now-syll'));
+  elBar.style.width = '0%';
+  elNow.textContent = 'Listo';
+  elNow.classList.remove('hit');
+  activo = false;
+  elPlay.disabled = false;
+  elStop.disabled = true;
+  elPlay.textContent = '▶ Sentir la melodía';
+}
+
+function pintaFrase(i, j) {
+  const frase = FRASES[i];
+  const linea = frase.map(([s]) => s).join('·');
+  const onda = frase.map(([, n]) => NOTA[n].dib).join('');
+  elNow.textContent = linea;
+  elNow.classList.add('hit');
+  elWave.innerHTML = onda.split('').map((c, k) =>
+    '<span' + (k === j ? ' class="now-note"' : '') + '>' + c + '</span>').join('');
+  elSylls.innerHTML = frase.map(([s], k) =>
+    '<span' + (k === j ? ' class="now-syll"' : '') + '>' + s + '</span>').join('');
+  document.querySelectorAll('.fr').forEach(f => f.classList.toggle('on', +f.dataset.fr === i));
+}
+
+function tocar() {
+  limpiar();
+  activo = true;
+  elPlay.disabled = true;
+  elStop.disabled = false;
+  elPlay.textContent = 'Vibrando en tu mano…';
+  let t = 0;
+  const pasos = FRASES.reduce((a, f) => a + f.length, 0);
+  let n = 0;
+  FRASES.forEach((frase, i) => {
+    frase.forEach(([sil, nom], j) => {
+      const d = Math.round(dur(i, j) * factor);
+      const inicio = t;
+      const idx = n;   // capturar el índice AHORA: `n` sigue avanzando y el closure leería el total
+      timers.push(setTimeout(() => {
+        if (!activo) return;
+        pintaFrase(i, j);
+        if (puedeVibrar) navigator.vibrate(patronVibracion(NOTA[nom].lvl, d));
+        elBar.style.width = ((idx + 1) / pasos * 100).toFixed(1) + '%';
+      }, inicio));
+      // apaga la nota al terminar (el "silencio" entre notas también se siente)
+      timers.push(setTimeout(() => {
+        if (!activo) return;
+        elNow.classList.remove('hit');
+        elWave.querySelectorAll('.now-note').forEach(e => e.classList.remove('now-note'));
+        elSylls.querySelectorAll('.now-syll').forEach(e => e.classList.remove('now-syll'));
+      }, inicio + Math.round(d * 0.72)));
+      t += d + Math.round(GAP * factor);
+      n++;
+    });
+    t += Math.round(160 * factor); // respiro entre frases
+  });
+  timers.push(setTimeout(() => { if (activo) limpiar(); }, t + 400));
+}
+
+elPlay.addEventListener('click', tocar);
+elStop.addEventListener('click', limpiar);
+elSpeed.addEventListener('click', () => {
+  fi = (fi + 1) % factores.length;
+  factor = factores[fi];
+  elSpeed.textContent = 'Velocidad: ' + nombres[fi];
+  elSpeed.setAttribute('aria-pressed', fi !== 0 ? 'true' : 'false');
+});
+elWave.innerHTML = NOTA['C'].dib.repeat(7);
+pintaFrase(0, -1);
+limpiar();
+</script>
+</body>
+</html>
