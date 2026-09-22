@@ -5,269 +5,314 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1020">
 <link rel="icon" href="data:,">
-<title>Canción para sentir — sin sonido</title>
+<title>Canciones para sentir — sin sonido</title>
 <style>
   :root {
-    --bg: #0b1020;
-    --surface: #151b2e;
-    --surface-2: #1d2540;
-    --ink: #eef2ff;
-    --muted: #94a0bf;
-    --accent: #7dd3fc;
-    --accent-2: #f0abfc;
-    --border: #2a3350;
+    --bg:#0b1020; --surface:#151b2e; --surface-2:#1d2540; --ink:#eef2ff; --muted:#94a0bf;
+    --accent:#7dd3fc; --accent-2:#f0abfc; --border:#2a3350; --warm:#fbbf24;
   }
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    background: radial-gradient(120% 80% at 50% 0%, #17203a 0%, var(--bg) 55%);
-    color: var(--ink);
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 22px 18px 34px;
-    gap: 18px;
-  }
-  header { text-align: center; max-width: 30rem; }
-  h1 { font-size: 1.35rem; margin: 0 0 8px; letter-spacing: -.01em; }
-  .tagline { color: var(--muted); font-size: .92rem; line-height: 1.45; margin: 0; }
-  .muted { color: var(--muted); }
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 18px 16px;
-    width: 100%;
-    max-width: 30rem;
-  }
-  .now {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    /* en un móvil de 360-412px la frase completa debe caber: escalar y permitir corte de línea */
-    font-size: clamp(1rem, 4.7vw, 1.5rem);
-    line-height: 1.35;
-    letter-spacing: .01em;
-    min-height: 2.1rem;
-    overflow-wrap: anywhere;
-    color: var(--muted);
-    transition: color .12s ease;
-  }
-  .now.hit { color: var(--ink); }
-  .wave { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 1.9rem; line-height: 1.1; letter-spacing: .16em; color: #46527a; }
-  .wave span { transition: color .1s ease, transform .1s ease; display: inline-block; }
-  .wave span.now-note { color: var(--accent); transform: translateY(-3px) scale(1.12); }
-  .sylls { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-  .sylls span {
-    font-size: .88rem; padding: 3px 7px; border-radius: 8px;
-    background: var(--surface-2); color: var(--muted); transition: all .1s ease;
-  }
-  .sylls span.now-syll { background: var(--accent); color: #06283a; font-weight: 700; }
-  .pulse {
-    margin-top: 14px; height: 6px; border-radius: 99px; background: var(--surface-2);
-    overflow: hidden;
-  }
-  .pulse i { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
-  button {
-    font: inherit; font-weight: 650; border-radius: 14px; border: 0;
-    padding: 15px 20px; min-height: 52px; cursor: pointer; color: #06283a;
-    background: linear-gradient(180deg, #a5e8ff, var(--accent));
-    width: 100%; max-width: 30rem;
-  }
-  button.ghost { background: transparent; color: var(--ink); border: 1px solid var(--border); }
-  button:disabled { opacity: .45; cursor: default; }
-  .row { display: flex; gap: 10px; width: 100%; max-width: 30rem; }
-  .row button { flex: 1; padding: 12px 10px; min-height: 46px; font-size: .88rem; }
-  .row button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
-  .score { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .92rem; line-height: 1.85; white-space: pre; overflow-x: auto; }
-  .score .fr { color: #64719b; display: block; }
-  .score .fr.on { color: var(--ink); }
-  .warn {
-    background: #2a1e12; border: 1px solid #6b4a1f; color: #ffd9a3;
-    font-size: .86rem; line-height: 1.45; border-radius: 12px; padding: 11px 13px;
-    max-width: 30rem;
-  }
-  footer { color: var(--muted); font-size: .78rem; text-align: center; max-width: 26rem; line-height: 1.5; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html, body { margin:0; padding:0; }
+  body { background:radial-gradient(120% 80% at 50% 0%, #17203a 0%, var(--bg) 55%); color:var(--ink);
+    font-family:ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    min-height:100dvh; display:flex; flex-direction:column; align-items:center; padding:20px 16px 32px; gap:14px; }
+  header { text-align:center; max-width:30rem; }
+  h1 { font-size:1.3rem; margin:0 0 8px; letter-spacing:-.01em; }
+  .tagline { color:var(--muted); font-size:.9rem; line-height:1.45; margin:0; }
+  .muted { color:var(--muted); }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:16px; width:100%; max-width:30rem; }
+  .groups { width:100%; max-width:30rem; }
+  .groups h2 { font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:14px 0 8px; font-weight:700; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; }
+  .chip { font:inherit; font-size:.84rem; padding:9px 13px; min-height:40px; border-radius:999px;
+    border:1px solid var(--border); background:var(--surface); color:var(--ink); cursor:pointer; }
+  .chip[aria-pressed="true"] { background:linear-gradient(180deg,#a5e8ff,var(--accent)); color:#06283a; border-color:transparent; font-weight:700; }
+  .now { font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:clamp(1rem,4.7vw,1.45rem);
+    line-height:1.35; letter-spacing:.01em; min-height:2.1rem; overflow-wrap:anywhere; color:var(--muted); transition:color .12s ease; }
+  .now.hit { color:var(--ink); }
+  .wave { font-family:ui-monospace, Menlo, Consolas, monospace; font-size:1.8rem; line-height:1.15; letter-spacing:.14em; color:#46527a; }
+  .wave span { transition:color .1s ease, transform .1s ease; display:inline-block; }
+  .wave span.high { color:#2f3a5c; }
+  .wave span.now-note { color:var(--accent); transform:translateY(-3px) scale(1.12); }
+  .wave span.now-note.high { color:var(--warm); }
+  .sylls { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+  .sylls span { font-size:.86rem; padding:3px 7px; border-radius:8px; background:var(--surface-2); color:var(--muted); transition:all .1s ease; }
+  .sylls span.now-syll { background:var(--accent); color:#06283a; font-weight:700; }
+  .pulse { margin-top:14px; height:6px; border-radius:99px; background:var(--surface-2); overflow:hidden; }
+  .pulse i { display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent-2)); }
+  button.main { font:inherit; font-weight:650; border-radius:14px; border:0; padding:15px 20px; min-height:52px;
+    cursor:pointer; color:#06283a; background:linear-gradient(180deg,#a5e8ff,var(--accent)); width:100%; max-width:30rem; }
+  button.main:disabled { opacity:.5; cursor:default; }
+  .row { display:flex; gap:10px; width:100%; max-width:30rem; }
+  .row button { flex:1; font:inherit; font-size:.86rem; padding:12px 8px; min-height:46px; border-radius:14px;
+    background:transparent; color:var(--ink); border:1px solid var(--border); cursor:pointer; }
+  .row button[aria-pressed="true"] { border-color:var(--accent); color:var(--accent); }
+  .score { font-family:ui-monospace, Menlo, Consolas, monospace; font-size:.88rem; line-height:1.75; white-space:pre; overflow-x:auto; }
+  .score .fr { color:#64719b; display:block; }
+  .score .fr.on { color:var(--ink); }
+  .grid { display:grid; grid-template-columns:repeat(16,1fr); gap:3px; margin-top:10px; }
+  .grid i { text-align:center; font-size:.72rem; font-style:normal; padding:6px 0; border-radius:6px; background:var(--surface-2); color:#3f4a70; transition:all .08s ease; }
+  .grid i.k { color:#93a4d8; } .grid i.s { color:#d8a2e8; }
+  .grid i.on { background:var(--accent); color:#06283a; font-weight:700; }
+  .warn { background:#2a1e12; border:1px solid #6b4a1f; color:#ffd9a3; font-size:.85rem; line-height:1.45; border-radius:12px; padding:11px 13px; max-width:30rem; }
+  footer { color:var(--muted); font-size:.77rem; text-align:center; max-width:26rem; line-height:1.55; }
+  .hint { font-size:.8rem; color:var(--muted); margin-top:10px; line-height:1.5; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Canción para sentir</h1>
+  <h1>Canciones para sentir</h1>
   <p class="tagline">Sin audífonos y sin sonido: el teléfono <strong>vibra la melodía</strong> en la mano y la letra se ilumina al ritmo. Esta página no reproduce ningún audio.</p>
 </header>
 
 <div id="warn" class="warn" hidden></div>
+<div class="groups" id="groups"></div>
 
 <section class="card">
-  <div class="now" id="now">Pulsa el botón para empezar</div>
+  <div class="now" id="now">Elige una canción y pulsa el botón</div>
   <div class="wave" id="wave"></div>
   <div class="sylls" id="sylls"></div>
   <div class="pulse"><i id="bar"></i></div>
+  <div class="grid" id="grid" hidden></div>
+  <div class="hint" id="hint"></div>
 </section>
 
-<button id="play">▶ Sentir la melodía</button>
+<button class="main" id="play">▶ Sentir la melodía</button>
 
 <div class="row">
-  <button class="ghost" id="speed" aria-pressed="false">Velocidad: normal</button>
-  <button class="ghost" id="stop" disabled>■ Detener</button>
+  <button id="speed" aria-pressed="false">Velocidad: normal</button>
+  <button id="stop" disabled>■ Detener</button>
 </div>
 
 <section class="card">
-  <div class="muted" style="font-size:.82rem;margin-bottom:8px">Estrellita — tradicional (melodía de dominio público)</div>
+  <div class="muted" id="score-title" style="font-size:.82rem;margin-bottom:8px"></div>
   <div class="score" id="score"></div>
 </section>
 
 <footer>
-  ▁ = nota grave · █ = nota aguda · cada punto es un golpe: marca el ritmo con el pulso.<br>
-  La vibración funciona en Chrome de Android. En iPhone el navegador no permite vibrar, pero la melodía igual se lee y se anima.
+  ▁▂▃▄▅▆▇█ = altura de la nota (la octava alta va en ámbar) · cada punto es un golpe, márcalo con el pulso.<br>
+  La vibración funciona en Chrome de Android. En iPhone ningún navegador permite vibrar, pero la melodía igual se lee y se anima.
 </footer>
 
 <script>
-// Estrellita (Twinkle Twinkle): 6 frases x 7 notas. Nada de audio: vibración + texto.
-// La ALTURA de la nota define el dibujo (▁▂▃▄▅▆) y también el patrón de vibración
-// (grave = un pulso largo y suave, agudo = pulsos cortos y rápidos): así se siente subir y bajar.
+/* ── Notas: nivel (define el patrón de vibración) y dibujo ───────────── */
 const NOTA = {
-  C: { lvl: 1, dib: '▁', hz: 262 },
-  D: { lvl: 2, dib: '▂', hz: 294 },
-  E: { lvl: 3, dib: '▃', hz: 330 },
-  F: { lvl: 4, dib: '▄', hz: 349 },
-  G: { lvl: 5, dib: '▅', hz: 392 },
-  A: { lvl: 6, dib: '▆', hz: 440 }
+  C:{n:1,d:'▁'}, D:{n:2,d:'▂'}, E:{n:3,d:'▃'}, F:{n:4,d:'▄'}, G:{n:5,d:'▅'}, A:{n:6,d:'▆'},
+  Bb:{n:7,d:'▇'}, B:{n:8,d:'▇'},
+  C2:{n:9,d:'▁',hi:1}, D2:{n:10,d:'▂',hi:1}, E2:{n:11,d:'▃',hi:1}, F2:{n:12,d:'▄',hi:1}
 };
-const NEGRA = 470, RAPIDA = 340, LARGA = 950, GAP = 70;
 
-// [sílaba, nota] por frase — 7 golpes por frase
-const FRASES = [
-  [['Es','C'],['tre','C'],['lli','G'],['ta','G'],['dón','A'],['de','A'],['es·tás','G']],
-  [['Me','F'],['pre','F'],['gun','E'],['to','E'],['qué','D'],['se','D'],['rás','C']],
-  [['En','G'],['el','G'],['cie','F'],['lo','F'],['y','E'],['en','E'],['mar','D']],
-  [['Un','G'],['dia','G'],['man','F'],['te','F'],['de','E'],['ver','E'],['dad','D']],
-  [['Es','C'],['tre','C'],['lli','G'],['ta','G'],['dón','A'],['de','A'],['es·tás','G']],
-  [['Me','F'],['pre','F'],['gun','E'],['to','E'],['qué','D'],['se','D'],['rás','C']]
+/* ── Repertorio. Cada frase: letra con «|» entre sílabas y «_» para las que
+     se cantan en un solo golpe; las notas van en el mismo orden (mismo número). */
+const CANCIONES = [
+  { id:"estrellita", titulo:"Estrellita", grupo:"Cl\u00e1sicas \u00b7 tradicional", tempo:470, sostiene:950, fuente:"Melod\u00eda an\u00f3nima del siglo XVIII (dominio p\u00fablico)", tipo:"melodia", frases:[
+      { letra:"Es|tre|lli|ta d\u00f3n|de_es|t\u00e1s", notas:"C C G G A A G" },
+      { letra:"Me|pre|gun|to qu\u00e9|se|r\u00e1s", notas:"F F E E D D C" },
+      { letra:"En|el cie|lo y_en|el mar", notas:"G G F F E E D" },
+      { letra:"Un|dia|man|te de|ver|dad", notas:"G G F F E E D" },
+      { letra:"Es|tre|lli|ta d\u00f3n|de_es|t\u00e1s", notas:"C C G G A A G" },
+      { letra:"Me|pre|gun|to qu\u00e9|se|r\u00e1s", notas:"F F E E D D C" }
+    ] },
+  { id:"noche-paz", titulo:"Noche de paz", grupo:"Navidad \u00b7 tradicional", tempo:620, sostiene:1150, fuente:"Joseph Mohr y Franz Gruber, 1818 (dominio p\u00fablico)", tipo:"melodia", frases:[
+      { letra:"No|che de|paz", notas:"G A G E" },
+      { letra:"No|che de_a|mor", notas:"G A G E" },
+      { letra:"To|do duer|me_en de|rre_dor", notas:"D2 D2 B C2 C2 B" },
+      { letra:"En|tre_los|as|tros", notas:"A A C2 B" },
+      { letra:"que_es|par|cen su_luz", notas:"A G A B" },
+      { letra:"Be|lla_a|nun|cian", notas:"A A G G" },
+      { letra:"do_al|ni_\u00f1o|Je|s\u00fas", notas:"E E D2 D2" },
+      { letra:"Bri|lla la es|tre|lla de|paz", notas:"C2 C2 A A G G A A" }
+    ] },
+  { id:"navidad", titulo:"Navidad, Navidad", grupo:"Navidad \u00b7 tradicional", tempo:330, sostiene:700, fuente:"Melod\u00eda \u00abJingle Bells\u00bb, 1857 (dominio p\u00fablico)", tipo:"melodia", frases:[
+      { letra:"Na|vi|dad", notas:"E E E" },
+      { letra:"Na|vi|dad", notas:"E E E" },
+      { letra:"hoy_es|Na|vi|dad|ya", notas:"E G C D E" },
+      { letra:"Es_un|d\u00eda|de_a|le|gr\u00ed_a", notas:"F F F F F" },
+      { letra:"y|Fe|li|ci|dad", notas:"E D D E D" },
+      { letra:"Na|vi|dad", notas:"E E E" },
+      { letra:"Na|vi|dad", notas:"E E E" },
+      { letra:"hoy_es|Na|vi|dad|ya", notas:"E G C D E" },
+      { letra:"Es_un|d\u00eda|de_a|le|gr\u00ed_a", notas:"E D D E D" },
+      { letra:"\u00a1Fe|li|ci|dad!", notas:"G G F D" }
+    ] },
+  { id:"campana", titulo:"Campana sobre campana", grupo:"Navidad \u00b7 tradicional", tempo:400, sostiene:800, fuente:"Villancico popular espa\u00f1ol del siglo XIX (dominio p\u00fablico)", tipo:"melodia", frases:[
+      { letra:"Cam|pa|na so|bre cam|pa|na", notas:"F F F F E F G E" },
+      { letra:"y|so|bre cam|pa|na u|na", notas:"G G A Bb A G A F" },
+      { letra:"A|s\u00f3|ma|te_a la ven|ta|na", notas:"F F F F E F G E" },
+      { letra:"que_ve|r\u00e1s al|ni|\u00f1o_en|la|cu|na", notas:"G G A Bb A G A F" }
+    ] },
+  { id:"dembow", titulo:"El dembow (reggaet\u00f3n)", grupo:"Reggaet\u00f3n \u00b7 ritmo base", tempo:158, sostiene:158, fuente:"Patr\u00f3n r\u00edtmico gen\u00e9rico del g\u00e9nero (bombo en los 4 tiempos + caja en el 3+3+2)", tipo:"ritmo", compases:2,
+    hit:{ K:{dur:70}, S:{dur:34} },
+    pasos:{ kick:[1,5,9,13,17,21,25,29], snare:[4,7,12,15,20,23,28,31] },
+    letra:"BOMBO en los cuatro tiempos y CAJA en el tresillo 3+3+2: eso es el dembow. "
+      + "Pon el dedo en el teléfono y cuenta cuatro: el pulso se te queda pegado." },
+  { id:"noche-entera", titulo:"La noche entera", grupo:"Reggaet\u00f3n \u00b7 letra original", tempo:300, sostiene:560, fuente:"Letra y melod\u00eda originales escritas para esta p\u00e1gina", tipo:"melodia", frases:[
+      { letra:"Pren|do la|no|che_y|sue|na_el|gu\u00e9", notas:"A A C C D D E E" },
+      { letra:"To|dos bai|lan|do no pa|ra_mos", notas:"A A C C D D E E" },
+      { letra:"Su|be|la|m\u00fa|si|ca_y|bai|la", notas:"D D C C A A C C" },
+      { letra:"Y_al|a|mo|ne|cer|bai|las|m\u00e1s", notas:"E D C A A C D E" }
+    ] },
 ];
-// la última nota de cada frase (y las dos 'la la' del final de la 1ª mitad) se sostienen
-function dur(i, j) {
-  if (j === 6) return LARGA;
-  if (j >= 4 && j <= 5 && (i === 0 || i === 4)) return RAPIDA;
-  return NEGRA;
-}
-function patronVibracion(lvl, ms) {
-  const t = Math.round(ms * 0.7);
-  if (lvl <= 2) return [t];                      // grave: un pulso largo
-  if (lvl <= 3) return [Math.round(t * .6), GAP, Math.round(t * .4)];
-  if (lvl <= 4) return [Math.round(t * .45), GAP, Math.round(t * .45)];
-  if (lvl === 5) return [Math.round(t * .3), GAP, Math.round(t * .3), GAP, Math.round(t * .3)];
-  return [Math.round(t * .25), GAP, Math.round(t * .25), GAP, Math.round(t * .25), GAP, Math.round(t * .25)];
-}
 
-const elNow = document.getElementById('now');
-const elWave = document.getElementById('wave');
-const elSylls = document.getElementById('sylls');
-const elScore = document.getElementById('score');
-const elBar = document.getElementById('bar');
-const elPlay = document.getElementById('play');
-const elStop = document.getElementById('stop');
-const elSpeed = document.getElementById('speed');
-const elWarn = document.getElementById('warn');
+/* ── motor ───────────────────────────────────────────────────────────── */
+const elGroups=document.getElementById('groups'), elNow=document.getElementById('now'), elWave=document.getElementById('wave');
+const elSylls=document.getElementById('sylls'), elScore=document.getElementById('score'), elScoreTitle=document.getElementById('score-title');
+const elBar=document.getElementById('bar'), elGrid=document.getElementById('grid'), elHint=document.getElementById('hint');
+const elPlay=document.getElementById('play'), elStop=document.getElementById('stop'), elSpeed=document.getElementById('speed'), elWarn=document.getElementById('warn');
 
 const puedeVibrar = typeof navigator.vibrate === 'function';
 if (!puedeVibrar) {
   elWarn.hidden = false;
-  elWarn.innerHTML = '<strong>Este navegador no puede vibrar.</strong> En iPhone ningún navegador permite hacer vibrar el teléfono desde una web. En Android, abre esta misma dirección con <strong>Chrome</strong> y toca el botón: el pulso de la melodía se siente en la mano.';
+  elWarn.innerHTML = '<strong>Este navegador no puede vibrar.</strong> En iPhone ningún navegador deja vibrar desde una web. En Android abre esta dirección con <strong>Chrome</strong> y toca el botón: el pulso se siente en la mano.';
 }
-let factor = 1;
-const factores = [1, 0.65, 1.5], nombres = ['normal', 'lento', 'rápido'];
-let fi = 0;
 
-// Partitura completa
-FRASES.forEach((frase, i) => {
-  const linea = frase.map(([s]) => s).join('·');
-  const onda = frase.map(([, n]) => NOTA[n].dib).join('');
-  const b = document.createElement('span');
-  b.className = 'fr';
-  b.dataset.fr = i;
-  b.textContent = linea + '\n' + onda + '\n\n';
-  elScore.appendChild(b);
+let actual=null, factor=1, timers=[], activo=false, fi=0;
+const factores=[1,.65,1.5], nombres=['normal','lento','rápido'];
+
+// arma los golpes de una frase: letra y notas tienen el mismo largo (validado)
+function golpes(frase) {
+  const g = [];
+  frase.letra.split(' ').forEach((palabra, pi) => palabra.split('|').forEach((s, si) =>
+    g.push({ s: s, nueva: si === 0 && pi > 0 })));
+  const ns = frase.notas.split(' ');
+  return g.map((x, i) => ({ s: x.s, nueva: x.nueva, n: ns[i] }));
+}
+function textoFrases(frase) {
+  return golpes(frase).map((g, i) => (i ? (g.nueva ? ' ' : '·') : '') + g.s).join('');
+}
+const dibujo = n => NOTA[n].d;
+
+// selector por grupos
+[...new Set(CANCIONES.map(c => c.grupo))].forEach(g => {
+  const h = document.createElement('h2'); h.textContent = g; elGroups.appendChild(h);
+  const box = document.createElement('div'); box.className = 'chips';
+  CANCIONES.filter(c => c.grupo === g).forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'chip'; b.type = 'button'; b.textContent = c.titulo; b.dataset.id = c.id;
+    b.setAttribute('aria-pressed','false');
+    b.addEventListener('click', () => elegir(c.id));
+    box.appendChild(b);
+  });
+  elGroups.appendChild(box);
 });
 
-let timers = [], activo = false;
-
-function limpiar() {
-  timers.forEach(clearTimeout);
-  timers = [];
-  if (puedeVibrar) navigator.vibrate(0);
-  document.querySelectorAll('.fr').forEach(f => f.classList.remove('on'));
-  document.querySelectorAll('.now-note').forEach(f => f.classList.remove('now-note'));
-  document.querySelectorAll('.now-syll').forEach(f => f.classList.remove('now-syll'));
-  elBar.style.width = '0%';
-  elNow.textContent = 'Listo';
-  elNow.classList.remove('hit');
-  activo = false;
-  elPlay.disabled = false;
-  elStop.disabled = true;
-  elPlay.textContent = '▶ Sentir la melodía';
+function patron(nivel, ms) {
+  const t = Math.max(28, Math.round(ms*.7));
+  if (nivel <= 3)  return [t];
+  if (nivel <= 5)  return [Math.round(t*.55), 60, Math.round(t*.4)];
+  if (nivel <= 6)  return [Math.round(t*.35), 60, Math.round(t*.35), 60, Math.round(t*.3)];
+  if (nivel <= 8)  return [Math.round(t*.28), 55, Math.round(t*.28), 55, Math.round(t*.28), 55, Math.round(t*.24)];
+  return [Math.round(t*.22), 50, Math.round(t*.22), 50, Math.round(t*.22), 50, Math.round(t*.22), 50, Math.round(t*.2)];
 }
 
-function pintaFrase(i, j) {
-  const frase = FRASES[i];
-  const linea = frase.map(([s]) => s).join('·');
-  const onda = frase.map(([, n]) => NOTA[n].dib).join('');
-  elNow.textContent = linea;
-  elNow.classList.add('hit');
-  elWave.innerHTML = onda.split('').map((c, k) =>
-    '<span' + (k === j ? ' class="now-note"' : '') + '>' + c + '</span>').join('');
-  elSylls.innerHTML = frase.map(([s], k) =>
-    '<span' + (k === j ? ' class="now-syll"' : '') + '>' + s + '</span>').join('');
-  document.querySelectorAll('.fr').forEach(f => f.classList.toggle('on', +f.dataset.fr === i));
+function limpiar() {
+  timers.forEach(clearTimeout); timers = [];
+  if (puedeVibrar) navigator.vibrate(0);
+  activo = false;
+  document.querySelectorAll('.now-note,.now-syll,.on').forEach(e => e.classList.remove('now-note','now-syll','on'));
+  elBar.style.width='0%'; elNow.textContent='Listo'; elNow.classList.remove('hit');
+  elPlay.disabled=false; elStop.disabled=true; elPlay.textContent = actual ? '▶ Sentir: ' + actual.titulo : '▶ Sentir la melodía';
+}
+
+function pintarCabecera(i, j) {
+  const frase = actual.frases[i], gl = golpes(frase);
+  elNow.textContent = textoFrases(frase); elNow.classList.add('hit');
+  elWave.innerHTML = gl.map((g,k)=>'<span class="'+(NOTA[g.n].hi?'high':'')+(k===j?' now-note':'')+'">'+dibujo(g.n)+'</span>').join('');
+  elSylls.innerHTML = gl.map((g,k)=>'<span class="'+(k===j?'now-syll':'')+'">'+g.s+'</span>').join('');
+  document.querySelectorAll('.fr').forEach(f=>f.classList.toggle('on', +f.dataset.fr===i));
+}
+
+function pintarScore() {
+  elScoreTitle.textContent = actual.titulo + ' — ' + actual.fuente;
+  elScore.innerHTML = '';
+  if (actual.tipo === 'melodia') {
+    actual.frases.forEach((frase, i) => {
+      const onda = golpes(frase).map(g => dibujo(g.n) + (NOTA[g.n].hi ? 'ʰ' : '')).join('');
+      const b = document.createElement('span'); b.className='fr'; b.dataset.fr=i;
+      b.textContent = textoFrases(frase) + '\n' + onda + '\n\n';
+      elScore.appendChild(b);
+    });
+    elGrid.hidden = true;
+    elHint.textContent = 'Los puntos separan los golpes: uno por sílaba. «_» une dos sílabas en un solo golpe, como se canta.';
+  } else {
+    elScore.textContent = 'Patrón de 2 compases · 16 pasos cada uno\nBOMBO  pasos 1 · 5 · 9 · 13  (los cuatro tiempos)\nCAJA   pasos 4 · 7 · 12 · 15  (el 3+3+2)\n\n' + actual.letra + '\n';
+    elGrid.hidden = false;
+    elGrid.innerHTML = Array.from({length:32},()=>'<i></i>').join('');
+    elHint.textContent = 'Marca los cuatro tiempos con la mano: bombo en cada tiempo, caja en el tresillo que va por detrás. Eso es lo que se siente.';
+  }
+}
+
+function elegir(id) {
+  limpiar();
+  actual = CANCIONES.find(c=>c.id===id) || CANCIONES[0];
+  document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed', c.dataset.id===actual.id ? 'true':'false'));
+  pintarScore();
+  elNow.textContent = actual.titulo; elWave.innerHTML=''; elSylls.innerHTML='';
+  elPlay.textContent = '▶ Sentir: ' + actual.titulo;
+}
+
+function tocarMelodia() {
+  let t=0, n=0;
+  const total = actual.frases.reduce((a,f)=>a+ (f.letra.split(' ').join('|').split('|').length), 0);
+  actual.frases.forEach((frase,i) => {
+    const gl = golpes(frase);
+    gl.forEach((g,j) => {
+      const d = Math.round((j===gl.length-1 ? actual.sostiene : actual.tempo) * factor);
+      const idx=n++, inicio=t;
+      timers.push(setTimeout(()=>{
+        if(!activo) return;
+        pintarCabecera(i,j);
+        if(puedeVibrar) navigator.vibrate(patron(NOTA[g.n].n, d));
+        elBar.style.width = ((idx+1)/total*100).toFixed(1)+'%';
+      }, inicio));
+      timers.push(setTimeout(()=>{
+        if(!activo) return;
+        elNow.classList.remove('hit');
+        document.querySelectorAll('.now-note,.now-syll').forEach(e=>e.classList.remove('now-note','now-syll'));
+      }, inicio + Math.round(d*.72)));
+      t += d + Math.round(70*factor);
+    });
+    t += Math.round(170*factor);
+  });
+  timers.push(setTimeout(()=>{ if(activo) limpiar(); }, t+350));
+}
+
+function tocarRitmo() {
+  const paso = Math.round(actual.tempo*factor), celdas = elGrid.querySelectorAll('i'), total = 32;
+  for (let i=1;i<=total;i++){
+    const esK = actual.pasos.kick.includes(i), esS = actual.pasos.snare.includes(i);
+    const inicio=(i-1)*paso;
+    timers.push(setTimeout(()=>{
+      if(!activo) return;
+      celdas.forEach(c=>c.classList.remove('on'));
+      const cel=celdas[i-1];
+      if(cel){ cel.classList.add('on'); }
+      elNow.textContent = 'paso ' + ((i-1)%16+1) + ' / 16' + (esK&&esS ? ' · bombo + caja' : esK ? ' · BOMBO' : esS ? ' · caja' : '');
+      elNow.classList.add('hit');
+      if((esK||esS) && puedeVibrar) navigator.vibrate(esK ? actual.hit.K.dur : actual.hit.S.dur);
+      elBar.style.width = (i/total*100).toFixed(1)+'%';
+    }, inicio));
+    timers.push(setTimeout(()=>{ if(activo) elNow.classList.remove('hit'); }, inicio + Math.round(paso*.7)));
+  }
+  timers.push(setTimeout(()=>{ if(activo) limpiar(); }, total*paso+350));
 }
 
 function tocar() {
   limpiar();
-  activo = true;
-  elPlay.disabled = true;
-  elStop.disabled = false;
-  elPlay.textContent = 'Vibrando en tu mano…';
-  let t = 0;
-  const pasos = FRASES.reduce((a, f) => a + f.length, 0);
-  let n = 0;
-  FRASES.forEach((frase, i) => {
-    frase.forEach(([sil, nom], j) => {
-      const d = Math.round(dur(i, j) * factor);
-      const inicio = t;
-      const idx = n;   // capturar el índice AHORA: `n` sigue avanzando y el closure leería el total
-      timers.push(setTimeout(() => {
-        if (!activo) return;
-        pintaFrase(i, j);
-        if (puedeVibrar) navigator.vibrate(patronVibracion(NOTA[nom].lvl, d));
-        elBar.style.width = ((idx + 1) / pasos * 100).toFixed(1) + '%';
-      }, inicio));
-      // apaga la nota al terminar (el "silencio" entre notas también se siente)
-      timers.push(setTimeout(() => {
-        if (!activo) return;
-        elNow.classList.remove('hit');
-        elWave.querySelectorAll('.now-note').forEach(e => e.classList.remove('now-note'));
-        elSylls.querySelectorAll('.now-syll').forEach(e => e.classList.remove('now-syll'));
-      }, inicio + Math.round(d * 0.72)));
-      t += d + Math.round(GAP * factor);
-      n++;
-    });
-    t += Math.round(160 * factor); // respiro entre frases
-  });
-  timers.push(setTimeout(() => { if (activo) limpiar(); }, t + 400));
+  activo=true; elPlay.disabled=true; elStop.disabled=false; elPlay.textContent='Vibrando en tu mano…';
+  if (actual.tipo==='ritmo') tocarRitmo(); else tocarMelodia();
 }
 
 elPlay.addEventListener('click', tocar);
 elStop.addEventListener('click', limpiar);
-elSpeed.addEventListener('click', () => {
-  fi = (fi + 1) % factores.length;
-  factor = factores[fi];
-  elSpeed.textContent = 'Velocidad: ' + nombres[fi];
-  elSpeed.setAttribute('aria-pressed', fi !== 0 ? 'true' : 'false');
+elSpeed.addEventListener('click', ()=>{
+  fi=(fi+1)%factores.length; factor=factores[fi];
+  elSpeed.textContent='Velocidad: '+nombres[fi];
+  elSpeed.setAttribute('aria-pressed', fi!==0?'true':'false');
 });
-elWave.innerHTML = NOTA['C'].dib.repeat(7);
-pintaFrase(0, -1);
-limpiar();
+
+elegir(CANCIONES[0].id);
 </script>
 </body>
 </html>
